@@ -1,0 +1,2 @@
+#Excluding the database file.
+*.db
