@@ -77,4 +77,5 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django_extensions',
+    'django_bookmarks.bookmarks',
 )
