@@ -12,14 +12,19 @@ site_media = os.path.join(
 ) 
 
 urlpatterns = patterns('',
-    (r'^$', main_page),
-    (r'^user/(\w+)/$', user_page),
-    (r'^login/$', 'django.contrib.auth.views.login'),
-    (r'^logout/$', logout_page),
-    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': site_media }),
-    (r'^register/$', register_page),
-    (r'^register/success/$', direct_to_template, 
-      { 'template': 'registration/register_success.html' }),
+  # Browsing
+  (r'^$', main_page),
+  (r'^user/(\w+)/$', user_page),
+  # Session management
+  (r'^login/$', 'django.contrib.auth.views.login'),
+  (r'^logout/$', logout_page),
+  (r'^register/$', register_page),
+  (r'^register/success/$', direct_to_template,
+     { 'template': 'registration/register_success.html' }),
+  (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
+     { 'document_root': site_media }),
+  # Account management
+  (r'^save/$', bookmark_save_page),
       
     # Example:
     # (r'^django_bookmarks/', include('django_bookmarks.foo.urls')),
