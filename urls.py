@@ -29,6 +29,7 @@ urlpatterns = patterns('',
   #Tags
   (r'^tag/([^\s]+)/$', tag_page),
   (r'^tag/$', tag_cloud_page),
+  (r'^search/$', search_page),
   
    # Example:
     # (r'^django_bookmarks/', include('django_bookmarks.foo.urls')),
