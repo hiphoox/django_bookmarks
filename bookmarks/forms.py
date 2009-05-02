@@ -48,4 +48,4 @@ class BookmarkSaveForm(forms.Form):
     required=False, 
     widget=forms.TextInput(attrs={'size': 64}) 
   ) 
-    
+

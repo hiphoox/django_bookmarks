@@ -26,7 +26,9 @@ urlpatterns = patterns('',
   # Account management
   (r'^save/$', bookmark_save_page),
       
-    # Example:
+  (r'^accounts/login/$', 'django.contrib.auth.views.login'),   
+  
+   # Example:
     # (r'^django_bookmarks/', include('django_bookmarks.foo.urls')),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
