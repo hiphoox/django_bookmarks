@@ -11,6 +11,7 @@ from django.contrib.auth import logout
 from bookmarks.forms import *
 from bookmarks.models import *
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 def main_page(request): 
   return render_to_response( 
@@ -18,19 +19,15 @@ def main_page(request):
     ) 
   
 def user_page(request, username): 
-    try: 
-      user = User.objects.get(username=username) 
-    except: 
-      raise Http404('Requested user not found.') 
-    bookmarks = user.bookmark_set.all() 
-    template = get_template('user_page.html')
-    variables = RequestContext(request, { 
-        'username': username,
-        'bookmarks': bookmarks 
-    }) 
-    output = template.render(variables) 
-    return HttpResponse(output)
-    
+  user = get_object_or_404(User, username=username) 
+  bookmarks = user.bookmark_set.order_by('-id') 
+  variables = RequestContext(request, { 
+    'bookmarks': bookmarks, 
+    'username': username, 
+    'show_tags': True 
+  }) 
+  return render_to_response('user_page.html', variables)
+           
 def logout_page(request): 
   logout(request) 
   return HttpResponseRedirect('/') 
