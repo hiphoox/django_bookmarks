@@ -23,10 +23,11 @@ urlpatterns = patterns('',
      { 'template': 'registration/register_success.html' }),
   (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
      { 'document_root': site_media }),
+  (r'^accounts/login/$', 'django.contrib.auth.views.login'),   
   # Account management
   (r'^save/$', bookmark_save_page),
-      
-  (r'^accounts/login/$', 'django.contrib.auth.views.login'),   
+  #Tags
+  (r'^tag/([^\s]+)/$', tag_page),
   
    # Example:
     # (r'^django_bookmarks/', include('django_bookmarks.foo.urls')),
