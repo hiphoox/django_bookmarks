@@ -15,20 +15,8 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
 def main_page(request): 
-  return render_to_response( 
-    'main_page.html', RequestContext(request)  
-    ) 
+  return render_to_response('main_page.html', RequestContext(request)) 
   
-def user_page(request, username): 
-  user = get_object_or_404(User, username=username) 
-  bookmarks = user.bookmark_set.order_by('-id') 
-  variables = RequestContext(request, { 
-    'bookmarks': bookmarks, 
-    'username': username, 
-    'show_tags': True 
-  }) 
-  return render_to_response('user_page.html', variables)
-           
 def logout_page(request): 
   logout(request) 
   return HttpResponseRedirect('/') 
@@ -50,47 +38,56 @@ def register_page(request):
      'form': form 
   })
    
-  return render_to_response( 
-     'registration/register.html',  
-     variables 
-   ) 
+  return render_to_response('registration/register.html', variables) 
 
 @login_required 
 def bookmark_save_page(request): 
- if request.method == 'POST': 
-   form = BookmarkSaveForm(request.POST) 
-   if form.is_valid(): 
-     bookmark = _bookmark_save(request, form) 
-     return HttpResponseRedirect( 
-       '/user/%s/' % request.user.username 
-     ) 
- elif request.GET.has_key('url'): 
-   url = request.GET['url'] 
-   title = '' 
-   tags = '' 
-   try: 
-     link = Link.objects.get(url=url) 
-     bookmark = Bookmark.objects.get( 
-       link=link, 
-       user=request.user 
-     ) 
-     title = bookmark.title 
-     tags = ' '.join( 
-       tag.name for tag in bookmark.tag_set.all() 
-     ) 
-   except ObjectDoesNotExist: 
-     pass 
-   form = BookmarkSaveForm({ 
-     'url': url, 
-     'title': title, 
-     'tags': tags 
-   }) 
- else: 
-   form = BookmarkSaveForm() 
- variables = RequestContext(request, { 
-   'form': form 
- }) 
- return render_to_response('bookmark_save.html', variables)               
+  ajax = request.GET.has_key('ajax') 
+  if request.method == 'POST': 
+    form = BookmarkSaveForm(request.POST) 
+    if form.is_valid(): 
+      bookmark = _bookmark_save(request, form) 
+      if ajax: 
+        variables = RequestContext(request, { 
+          'bookmarks': [bookmark], 
+          'show_edit': True, 
+          'show_tags': True 
+          }) 
+        print "HERE"
+        return render_to_response('bookmark_list.html', variables) 
+      else: 
+        return HttpResponseRedirect('/user/%s/' % request.user.username) 
+    else: 
+      if ajax: 
+        return HttpResponse('failure') 
+  elif request.GET.has_key('url'): 
+    url = request.GET['url'] 
+    title = '' 
+    tags = ''
+    try: 
+      link = Link.objects.get(url=url) 
+      bookmark = Bookmark.objects.get(link=link, user=request.user) 
+      title = bookmark.title 
+      tags = ' '.join(tag.name for tag in bookmark.tag_set.all()) 
+    except: 
+      pass 
+    form = BookmarkSaveForm({ 
+      'url': url, 
+      'title': title, 
+      'tags': tags 
+    }) 
+  else: 
+    form = BookmarkSaveForm() 
+    
+  variables = RequestContext(request, { 
+    'form': form 
+  }) 
+  
+  if ajax: 
+    return render_to_response('bookmark_save_form.html', variables) 
+  else: 
+    return render_to_response('bookmark_save.html', variables ) 
+
                 
 def tag_page(request, tag_name): 
  tag = get_object_or_404(Tag, name=tag_name) 

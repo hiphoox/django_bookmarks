@@ -3,6 +3,7 @@ import re
 from django.contrib.auth.models import User 
 from django.core.exceptions import ObjectDoesNotExist 
 
+#Class definition    
 class RegistrationForm(forms.Form): 
   username = forms.CharField(label='Username', max_length=30) 
   email = forms.EmailField(label='Email') 
@@ -49,6 +50,7 @@ class BookmarkSaveForm(forms.Form):
     widget=forms.TextInput(attrs={'size': 64}) 
   ) 
 
+#Class definition    
 class SearchForm(forms.Form): 
   query = forms.CharField( 
       label='Enter a keyword to search for', 
