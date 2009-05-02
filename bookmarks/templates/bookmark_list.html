@@ -2,17 +2,16 @@
   <ul class="bookmarks"> 
     {% for bookmark in bookmarks %} 
       <li> 
-        <a href="{{ bookmark.link.url }}" class="title"> 
-          {{ bookmark.title }}</a> 
+      <a href="{{ bookmark.link.url|escape }}" class="title"> 
+        {{ bookmark.title|escape }}</a>
         <br /> 
         {% if show_tags %} 
           Tags: 
           {% if bookmark.tag_set.all %} 
           <ul class="tags"> 
             {% for tag in bookmark.tag_set.all %} 
-              <li> 
-                <a href="/tag/{{ tag.name }}/">{{ tag.name }}</a> 
-              </li> 
+            <li><a href="/tag/{{ tag.name|urlencode }}/"> 
+               {{ tag.name|escape }}</a></li>
             {% endfor %} 
           </ul>
           {% else %} 
