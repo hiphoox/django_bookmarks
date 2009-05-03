@@ -12,14 +12,14 @@
   <div id="nav"> 
     <a href="/">home</a> | 
     {% if user.is_authenticated %} 
-      <a href="/save/">submit</a> | 
-      <a href="/search/">search</a> |
-      <a href="/user/{{ user.username }}/"> 
+      <a href={%url bookmarks.views.bookmark_save_page%}>submit</a> | 
+      <a href={%url bookmarks.views.search_page%}>search</a> |
+      <a href={%url bookmarks.views.user_page user.username%}> 
        {{ user.username }}</a> | 
-      <a href="/logout/">logout</a> 
+      <a href={%url bookmarks.views.logout_page%}>logout</a> 
     {% else %}
-      <a href="/login/">login</a> | 
-      <a href="/register/">register</a> 
+      <a href={%url django.contrib.auth.views.login%}>login</a> | 
+      <a href={%url bookmarks.views.register_page%}>register</a> 
     {% endif %} 
   </div>
   
