@@ -9,7 +9,6 @@ class Link(models.Model):
   def __str__(self): 
      return self.url
      
-     
 class Bookmark(models.Model): 
   title = models.CharField(max_length=200) 
   user = models.ForeignKey(User) 
@@ -17,7 +16,6 @@ class Bookmark(models.Model):
     
   def __str__(self): 
      return '%s, %s' % (self.user.username, self.link.url) 
-  
     
 class Tag(models.Model): 
   name = models.CharField(max_length=64, unique=True) 
